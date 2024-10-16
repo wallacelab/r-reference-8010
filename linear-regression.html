@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Linear Regression | R Reference Sheet for CRSS 8010</title>
+  <meta name="description" content="Basic R reference document for CRSS 8010" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Linear Regression | R Reference Sheet for CRSS 8010" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://wallacelab.uga.edu/class/r-reference/" />
+  
+  <meta property="og:description" content="Basic R reference document for CRSS 8010" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Linear Regression | R Reference Sheet for CRSS 8010" />
+  
+  <meta name="twitter:description" content="Basic R reference document for CRSS 8010" />
+  
+
+<meta name="author" content="Jason G. Wallace" />
+
+
+<meta name="date" content="2020-09-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="anova.html"/>
+<link rel="next" href="experimental-designs.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Reference Sheet for CRSS 8010</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="r-basics.html"><a href="r-basics.html"><i class="fa fa-check"></i><b>1</b> R Basics</a><ul>
+<li class="chapter" data-level="1.1" data-path="r-basics.html"><a href="r-basics.html#data-types"><i class="fa fa-check"></i><b>1.1</b> Data types</a></li>
+<li class="chapter" data-level="1.2" data-path="r-basics.html"><a href="r-basics.html#vectors"><i class="fa fa-check"></i><b>1.2</b> Vectors</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="r-basics.html"><a href="r-basics.html#c"><i class="fa fa-check"></i><b>1.2.1</b> c()</a></li>
+<li class="chapter" data-level="1.2.2" data-path="r-basics.html"><a href="r-basics.html#length"><i class="fa fa-check"></i><b>1.2.2</b> length()</a></li>
+<li class="chapter" data-level="1.2.3" data-path="r-basics.html"><a href="r-basics.html#class"><i class="fa fa-check"></i><b>1.2.3</b> class()</a></li>
+<li class="chapter" data-level="1.2.4" data-path="r-basics.html"><a href="r-basics.html#as.____"><i class="fa fa-check"></i><b>1.2.4</b> as.____()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="r-basics.html"><a href="r-basics.html#matrices"><i class="fa fa-check"></i><b>1.3</b> Matrices</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="r-basics.html"><a href="r-basics.html#matrix"><i class="fa fa-check"></i><b>1.3.1</b> matrix()</a></li>
+<li class="chapter" data-level="1.3.2" data-path="r-basics.html"><a href="r-basics.html#matrix-dimensions-dim-nrow-and-ncol"><i class="fa fa-check"></i><b>1.3.2</b> Matrix dimensions: dim(), nrow() and ncol()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="r-basics.html"><a href="r-basics.html#data-frames"><i class="fa fa-check"></i><b>1.4</b> Data frames</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="r-basics.html"><a href="r-basics.html#data.frame"><i class="fa fa-check"></i><b>1.4.1</b> data.frame()</a></li>
+<li class="chapter" data-level="1.4.2" data-path="r-basics.html"><a href="r-basics.html#dim-nrow-and-ncol"><i class="fa fa-check"></i><b>1.4.2</b> dim(), nrow() and ncol()</a></li>
+<li class="chapter" data-level="1.4.3" data-path="r-basics.html"><a href="r-basics.html#names"><i class="fa fa-check"></i><b>1.4.3</b> names()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="r-basics.html"><a href="r-basics.html#lists"><i class="fa fa-check"></i><b>1.5</b> Lists</a><ul>
+<li class="chapter" data-level="1.5.1" data-path="r-basics.html"><a href="r-basics.html#list"><i class="fa fa-check"></i><b>1.5.1</b> list()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="r-basics.html"><a href="r-basics.html#reading-and-writing-data"><i class="fa fa-check"></i><b>1.6</b> Reading and writing data</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="r-basics.html"><a href="r-basics.html#scan"><i class="fa fa-check"></i><b>1.6.1</b> scan()</a></li>
+<li class="chapter" data-level="1.6.2" data-path="r-basics.html"><a href="r-basics.html#read.table-and-read.csv"><i class="fa fa-check"></i><b>1.6.2</b> read.table() and read.csv()</a></li>
+<li class="chapter" data-level="1.6.3" data-path="r-basics.html"><a href="r-basics.html#write.table-and-write.csv"><i class="fa fa-check"></i><b>1.6.3</b> write.table() and write.csv()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="r-basics.html"><a href="r-basics.html#boolean-expressions"><i class="fa fa-check"></i><b>1.7</b> Boolean expressions</a><ul>
+<li class="chapter" data-level="1.7.1" data-path="r-basics.html"><a href="r-basics.html#basic-comparison-operators"><i class="fa fa-check"></i><b>1.7.1</b> Basic comparison operators</a></li>
+<li class="chapter" data-level="1.7.2" data-path="r-basics.html"><a href="r-basics.html#missing-and-non-finite-values"><i class="fa fa-check"></i><b>1.7.2</b> Missing and non-finite values</a></li>
+<li class="chapter" data-level="1.7.3" data-path="r-basics.html"><a href="r-basics.html#boolean-operators"><i class="fa fa-check"></i><b>1.7.3</b> Boolean operators</a></li>
+<li class="chapter" data-level="1.7.4" data-path="r-basics.html"><a href="r-basics.html#subsetting-with-boolean-expressions"><i class="fa fa-check"></i><b>1.7.4</b> Subsetting with boolean expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="r-basics.html"><a href="r-basics.html#other-utility-functions"><i class="fa fa-check"></i><b>1.8</b> Other utility functions</a><ul>
+<li class="chapter" data-level="1.8.1" data-path="r-basics.html"><a href="r-basics.html#head-and-tail"><i class="fa fa-check"></i><b>1.8.1</b> head() and tail()</a></li>
+<li class="chapter" data-level="1.8.2" data-path="r-basics.html"><a href="r-basics.html#str"><i class="fa fa-check"></i><b>1.8.2</b> str()</a></li>
+<li class="chapter" data-level="1.8.3" data-path="r-basics.html"><a href="r-basics.html#paste"><i class="fa fa-check"></i><b>1.8.3</b> paste()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="anova.html"><a href="anova.html"><i class="fa fa-check"></i><b>2</b> ANOVA</a><ul>
+<li class="chapter" data-level="2.1" data-path="anova.html"><a href="anova.html#aov"><i class="fa fa-check"></i><b>2.1</b> aov()</a></li>
+<li class="chapter" data-level="2.2" data-path="anova.html"><a href="anova.html#anova-1"><i class="fa fa-check"></i><b>2.2</b> anova()</a></li>
+<li class="chapter" data-level="2.3" data-path="anova.html"><a href="anova.html#anova-2"><i class="fa fa-check"></i><b>2.3</b> Anova()</a></li>
+<li class="chapter" data-level="2.4" data-path="anova.html"><a href="anova.html#tukey_tests"><i class="fa fa-check"></i><b>2.4</b> Tukey tests</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>3</b> Linear Regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="linear-regression.html"><a href="linear-regression.html#lm"><i class="fa fa-check"></i><b>3.1</b> lm()</a></li>
+<li class="chapter" data-level="3.2" data-path="linear-regression.html"><a href="linear-regression.html#random-effects-and-lme4"><i class="fa fa-check"></i><b>3.2</b> Random effects and lme4</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="linear-regression.html"><a href="linear-regression.html#extracting-blues-and-blups"><i class="fa fa-check"></i><b>3.2.1</b> Extracting BLUEs and BLUPs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="linear-regression.html"><a href="linear-regression.html#lmertest"><i class="fa fa-check"></i><b>3.3</b> lmerTest</a></li>
+<li class="chapter" data-level="3.4" data-path="linear-regression.html"><a href="linear-regression.html#em-means"><i class="fa fa-check"></i><b>3.4</b> EM-Means</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="linear-regression.html"><a href="linear-regression.html#cld"><i class="fa fa-check"></i><b>3.4.1</b> CLD()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="experimental-designs.html"><a href="experimental-designs.html"><i class="fa fa-check"></i><b>4</b> Experimental Designs</a><ul>
+<li class="chapter" data-level="4.1" data-path="experimental-designs.html"><a href="experimental-designs.html#factorial-designs"><i class="fa fa-check"></i><b>4.1</b> Factorial designs</a></li>
+<li class="chapter" data-level="4.2" data-path="experimental-designs.html"><a href="experimental-designs.html#completely-randomized-design"><i class="fa fa-check"></i><b>4.2</b> Completely randomized design</a></li>
+<li class="chapter" data-level="4.3" data-path="experimental-designs.html"><a href="experimental-designs.html#randomized-complete-block-designs"><i class="fa fa-check"></i><b>4.3</b> Randomized complete block designs</a></li>
+<li class="chapter" data-level="4.4" data-path="experimental-designs.html"><a href="experimental-designs.html#latin-squares"><i class="fa fa-check"></i><b>4.4</b> Latin Squares</a></li>
+<li class="chapter" data-level="4.5" data-path="experimental-designs.html"><a href="experimental-designs.html#graeco-latin-squares"><i class="fa fa-check"></i><b>4.5</b> Graeco-Latin Squares</a></li>
+<li class="chapter" data-level="4.6" data-path="experimental-designs.html"><a href="experimental-designs.html#balanced-incomplete-block-designs"><i class="fa fa-check"></i><b>4.6</b> Balanced Incomplete Block Designs</a></li>
+<li class="chapter" data-level="4.7" data-path="experimental-designs.html"><a href="experimental-designs.html#confounded-designs"><i class="fa fa-check"></i><b>4.7</b> Confounded designs</a></li>
+<li class="chapter" data-level="4.8" data-path="experimental-designs.html"><a href="experimental-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>4.8</b> Split-plot designs</a></li>
+<li class="chapter" data-level="4.9" data-path="experimental-designs.html"><a href="experimental-designs.html#strip-plot-designs"><i class="fa fa-check"></i><b>4.9</b> Strip-plot designs</a></li>
+<li class="chapter" data-level="4.10" data-path="experimental-designs.html"><a href="experimental-designs.html#augmented-designs"><i class="fa fa-check"></i><b>4.10</b> Augmented designs</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="plotting-tools.html"><a href="plotting-tools.html"><i class="fa fa-check"></i><b>5</b> Plotting Tools</a><ul>
+<li class="chapter" data-level="5.1" data-path="plotting-tools.html"><a href="plotting-tools.html#scatterplots"><i class="fa fa-check"></i><b>5.1</b> Scatterplots</a></li>
+<li class="chapter" data-level="5.2" data-path="plotting-tools.html"><a href="plotting-tools.html#histograms"><i class="fa fa-check"></i><b>5.2</b> Histograms</a></li>
+<li class="chapter" data-level="5.3" data-path="plotting-tools.html"><a href="plotting-tools.html#boxplots"><i class="fa fa-check"></i><b>5.3</b> Boxplots</a></li>
+<li class="chapter" data-level="5.4" data-path="plotting-tools.html"><a href="plotting-tools.html#violin-plots"><i class="fa fa-check"></i><b>5.4</b> Violin plots</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Reference Sheet for CRSS 8010</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="linear-regression" class="section level1">
+<h1><span class="header-section-number">Chapter 3</span> Linear Regression</h1>
+<p>Linear regression is the workhorse of statistics both in and out of this class.</p>
+<div id="lm" class="section level2">
+<h2><span class="header-section-number">3.1</span> lm()</h2>
+<p>lm() (for “linear model”) is the basic linear regression function. Fitting models is the same as fitting them with aov(), and it is recommended to have all your variables in a single data frame with the variable names as columns. (See <a href="http://faculty.chicagobooth.edu/richard.hahn/teaching/formulanotation.pdf">this document</a> for an explanation of R’s formula operators.) The summary() function will give you the model coefficients and statistical tests.</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="linear-regression.html#cb30-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb30-2"><a href="linear-regression.html#cb30-2"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lm</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb30-3"><a href="linear-regression.html#cb30-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(mymodel)</span>
+<span id="cb30-4"><a href="linear-regression.html#cb30-4"></a><span class="co">## </span></span>
+<span id="cb30-5"><a href="linear-regression.html#cb30-5"></a><span class="co">## Call:</span></span>
+<span id="cb30-6"><a href="linear-regression.html#cb30-6"></a><span class="co">## lm(formula = yield ~ block + variety, data = mydata)</span></span>
+<span id="cb30-7"><a href="linear-regression.html#cb30-7"></a><span class="co">## </span></span>
+<span id="cb30-8"><a href="linear-regression.html#cb30-8"></a><span class="co">## Residuals:</span></span>
+<span id="cb30-9"><a href="linear-regression.html#cb30-9"></a><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span id="cb30-10"><a href="linear-regression.html#cb30-10"></a><span class="co">## -1.0000 -0.4188  0.1000  0.3750  0.9125 </span></span>
+<span id="cb30-11"><a href="linear-regression.html#cb30-11"></a><span class="co">## </span></span>
+<span id="cb30-12"><a href="linear-regression.html#cb30-12"></a><span class="co">## Coefficients:</span></span>
+<span id="cb30-13"><a href="linear-regression.html#cb30-13"></a><span class="co">##              Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span id="cb30-14"><a href="linear-regression.html#cb30-14"></a><span class="co">## (Intercept)    6.8125     0.4028  16.912 1.04e-13 ***</span></span>
+<span id="cb30-15"><a href="linear-regression.html#cb30-15"></a><span class="co">## blockblock2    0.8500     0.4858   1.750 0.094779 .  </span></span>
+<span id="cb30-16"><a href="linear-regression.html#cb30-16"></a><span class="co">## blockblock3   -1.0500     0.4858  -2.161 0.042369 *  </span></span>
+<span id="cb30-17"><a href="linear-regression.html#cb30-17"></a><span class="co">## blockblock4   -2.0000     0.4858  -4.117 0.000491 ***</span></span>
+<span id="cb30-18"><a href="linear-regression.html#cb30-18"></a><span class="co">## blockblock5   -0.2250     0.4858  -0.463 0.648025    </span></span>
+<span id="cb30-19"><a href="linear-regression.html#cb30-19"></a><span class="co">## blockblock6    1.3250     0.4858   2.727 0.012618 *  </span></span>
+<span id="cb30-20"><a href="linear-regression.html#cb30-20"></a><span class="co">## blockblock7    0.0500     0.4858   0.103 0.919002    </span></span>
+<span id="cb30-21"><a href="linear-regression.html#cb30-21"></a><span class="co">## blockblock8   -0.2500     0.4858  -0.515 0.612204    </span></span>
+<span id="cb30-22"><a href="linear-regression.html#cb30-22"></a><span class="co">## varietyDK884   0.0625     0.3435   0.182 0.857375    </span></span>
+<span id="cb30-23"><a href="linear-regression.html#cb30-23"></a><span class="co">## varietyM154   -0.7375     0.3435  -2.147 0.043636 *  </span></span>
+<span id="cb30-24"><a href="linear-regression.html#cb30-24"></a><span class="co">## varietyPH991   1.0250     0.3435   2.984 0.007079 ** </span></span>
+<span id="cb30-25"><a href="linear-regression.html#cb30-25"></a><span class="co">## ---</span></span>
+<span id="cb30-26"><a href="linear-regression.html#cb30-26"></a><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb30-27"><a href="linear-regression.html#cb30-27"></a><span class="co">## </span></span>
+<span id="cb30-28"><a href="linear-regression.html#cb30-28"></a><span class="co">## Residual standard error: 0.687 on 21 degrees of freedom</span></span>
+<span id="cb30-29"><a href="linear-regression.html#cb30-29"></a><span class="co">## Multiple R-squared:  0.8108, Adjusted R-squared:  0.7207 </span></span>
+<span id="cb30-30"><a href="linear-regression.html#cb30-30"></a><span class="co">## F-statistic:     9 on 10 and 21 DF,  p-value: 1.406e-05</span></span></code></pre></div>
+<p>See the section on <a href="anova.html#anova">ANOVA</a> for how to do an ANOVA analysis of lm() results.</p>
+</div>
+<div id="random-effects-and-lme4" class="section level2">
+<h2><span class="header-section-number">3.2</span> Random effects and lme4</h2>
+<p>The lme4 package lets us make random effect models with the function lmer() (linear mixed effect regression; often pronounced ‘lemur’).</p>
+<p>Random effects are specified by putting “(1|name)” in the formula, where ‘name’ is your variable name. (Although you can tweak the random effects significantly by changing what else is inside the parentheses, you don’t need to get that advanced for this class.) Random effects are usually put last in the model formula.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="linear-regression.html#cb31-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(lme4)</span>
+<span id="cb31-2"><a href="linear-regression.html#cb31-2"></a><span class="co">## Loading required package: Matrix</span></span>
+<span id="cb31-3"><a href="linear-regression.html#cb31-3"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb31-4"><a href="linear-regression.html#cb31-4"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>block), <span class="dt">data=</span>mydata)</span>
+<span id="cb31-5"><a href="linear-regression.html#cb31-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(mymodel)</span>
+<span id="cb31-6"><a href="linear-regression.html#cb31-6"></a><span class="co">## Linear mixed model fit by REML [&#39;lmerMod&#39;]</span></span>
+<span id="cb31-7"><a href="linear-regression.html#cb31-7"></a><span class="co">## Formula: yield ~ variety + (1 | block)</span></span>
+<span id="cb31-8"><a href="linear-regression.html#cb31-8"></a><span class="co">##    Data: mydata</span></span>
+<span id="cb31-9"><a href="linear-regression.html#cb31-9"></a><span class="co">## </span></span>
+<span id="cb31-10"><a href="linear-regression.html#cb31-10"></a><span class="co">## REML criterion at convergence: 82.2</span></span>
+<span id="cb31-11"><a href="linear-regression.html#cb31-11"></a><span class="co">## </span></span>
+<span id="cb31-12"><a href="linear-regression.html#cb31-12"></a><span class="co">## Scaled residuals: </span></span>
+<span id="cb31-13"><a href="linear-regression.html#cb31-13"></a><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span id="cb31-14"><a href="linear-regression.html#cb31-14"></a><span class="co">## -1.5799 -0.6446  0.1855  0.5195  1.5489 </span></span>
+<span id="cb31-15"><a href="linear-regression.html#cb31-15"></a><span class="co">## </span></span>
+<span id="cb31-16"><a href="linear-regression.html#cb31-16"></a><span class="co">## Random effects:</span></span>
+<span id="cb31-17"><a href="linear-regression.html#cb31-17"></a><span class="co">##  Groups   Name        Variance Std.Dev.</span></span>
+<span id="cb31-18"><a href="linear-regression.html#cb31-18"></a><span class="co">##  block    (Intercept) 0.9513   0.9753  </span></span>
+<span id="cb31-19"><a href="linear-regression.html#cb31-19"></a><span class="co">##  Residual             0.4720   0.6870  </span></span>
+<span id="cb31-20"><a href="linear-regression.html#cb31-20"></a><span class="co">## Number of obs: 32, groups:  block, 8</span></span>
+<span id="cb31-21"><a href="linear-regression.html#cb31-21"></a><span class="co">## </span></span>
+<span id="cb31-22"><a href="linear-regression.html#cb31-22"></a><span class="co">## Fixed effects:</span></span>
+<span id="cb31-23"><a href="linear-regression.html#cb31-23"></a><span class="co">##              Estimate Std. Error t value</span></span>
+<span id="cb31-24"><a href="linear-regression.html#cb31-24"></a><span class="co">## (Intercept)    6.6500     0.4218  15.766</span></span>
+<span id="cb31-25"><a href="linear-regression.html#cb31-25"></a><span class="co">## varietyDK884   0.0625     0.3435   0.182</span></span>
+<span id="cb31-26"><a href="linear-regression.html#cb31-26"></a><span class="co">## varietyM154   -0.7375     0.3435  -2.147</span></span>
+<span id="cb31-27"><a href="linear-regression.html#cb31-27"></a><span class="co">## varietyPH991   1.0250     0.3435   2.984</span></span>
+<span id="cb31-28"><a href="linear-regression.html#cb31-28"></a><span class="co">## </span></span>
+<span id="cb31-29"><a href="linear-regression.html#cb31-29"></a><span class="co">## Correlation of Fixed Effects:</span></span>
+<span id="cb31-30"><a href="linear-regression.html#cb31-30"></a><span class="co">##             (Intr) vDK884 vrM154</span></span>
+<span id="cb31-31"><a href="linear-regression.html#cb31-31"></a><span class="co">## varityDK884 -0.407              </span></span>
+<span id="cb31-32"><a href="linear-regression.html#cb31-32"></a><span class="co">## varietyM154 -0.407  0.500       </span></span>
+<span id="cb31-33"><a href="linear-regression.html#cb31-33"></a><span class="co">## varityPH991 -0.407  0.500  0.500</span></span></code></pre></div>
+<div id="extracting-blues-and-blups" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> Extracting BLUEs and BLUPs</h3>
+<p>While coefficients() will get you the BLUEs for a normal lm() model, you want to use fixef() and ranef() to get the fixed (BLUEs) and random (BLUPs) effects of lmer() models</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="linear-regression.html#cb32-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(lme4)</span>
+<span id="cb32-2"><a href="linear-regression.html#cb32-2"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb32-3"><a href="linear-regression.html#cb32-3"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>block), <span class="dt">data=</span>mydata)</span>
+<span id="cb32-4"><a href="linear-regression.html#cb32-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">fixef</span>(mymodel) <span class="co"># Fixed effects (BLUEs)</span></span>
+<span id="cb32-5"><a href="linear-regression.html#cb32-5"></a><span class="co">##  (Intercept) varietyDK884  varietyM154 varietyPH991 </span></span>
+<span id="cb32-6"><a href="linear-regression.html#cb32-6"></a><span class="co">##       6.6500       0.0625      -0.7375       1.0250</span></span>
+<span id="cb32-7"><a href="linear-regression.html#cb32-7"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">ranef</span>(mymodel) <span class="co"># Random effects (BLUPs)</span></span>
+<span id="cb32-8"><a href="linear-regression.html#cb32-8"></a><span class="co">## $block</span></span>
+<span id="cb32-9"><a href="linear-regression.html#cb32-9"></a><span class="co">##        (Intercept)</span></span>
+<span id="cb32-10"><a href="linear-regression.html#cb32-10"></a><span class="co">## block1  0.14456656</span></span>
+<span id="cb32-11"><a href="linear-regression.html#cb32-11"></a><span class="co">## block2  0.90076090</span></span>
+<span id="cb32-12"><a href="linear-regression.html#cb32-12"></a><span class="co">## block3 -0.78955585</span></span>
+<span id="cb32-13"><a href="linear-regression.html#cb32-13"></a><span class="co">## block4 -1.63471422</span></span>
+<span id="cb32-14"><a href="linear-regression.html#cb32-14"></a><span class="co">## block5 -0.05560252</span></span>
+<span id="cb32-15"><a href="linear-regression.html#cb32-15"></a><span class="co">## block6  1.32334009</span></span>
+<span id="cb32-16"><a href="linear-regression.html#cb32-16"></a><span class="co">## block7  0.18904858</span></span>
+<span id="cb32-17"><a href="linear-regression.html#cb32-17"></a><span class="co">## block8 -0.07784353</span></span>
+<span id="cb32-18"><a href="linear-regression.html#cb32-18"></a><span class="co">## </span></span>
+<span id="cb32-19"><a href="linear-regression.html#cb32-19"></a><span class="co">## with conditional variances for &quot;block&quot;</span></span></code></pre></div>
+</div>
+</div>
+<div id="lmertest" class="section level2">
+<h2><span class="header-section-number">3.3</span> lmerTest</h2>
+<p>Running analyses of lmer() results is much easier with the <a href="https://cran.r-project.org/web/packages/lmerTest/index.html">lmerTest</a> package installed, since it gives you ANOVA functionality on random effects models.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="linear-regression.html#cb33-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(lmerTest) <span class="co"># Automatically loads lme4</span></span>
+<span id="cb33-2"><a href="linear-regression.html#cb33-2"></a><span class="co">## </span></span>
+<span id="cb33-3"><a href="linear-regression.html#cb33-3"></a><span class="co">## Attaching package: &#39;lmerTest&#39;</span></span>
+<span id="cb33-4"><a href="linear-regression.html#cb33-4"></a><span class="co">## The following object is masked from &#39;package:lme4&#39;:</span></span>
+<span id="cb33-5"><a href="linear-regression.html#cb33-5"></a><span class="co">## </span></span>
+<span id="cb33-6"><a href="linear-regression.html#cb33-6"></a><span class="co">##     lmer</span></span>
+<span id="cb33-7"><a href="linear-regression.html#cb33-7"></a><span class="co">## The following object is masked from &#39;package:stats&#39;:</span></span>
+<span id="cb33-8"><a href="linear-regression.html#cb33-8"></a><span class="co">## </span></span>
+<span id="cb33-9"><a href="linear-regression.html#cb33-9"></a><span class="co">##     step</span></span>
+<span id="cb33-10"><a href="linear-regression.html#cb33-10"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb33-11"><a href="linear-regression.html#cb33-11"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lmer</span>(yield <span class="op">~</span><span class="st"> </span>variety <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>block), <span class="dt">data=</span>mydata)</span>
+<span id="cb33-12"><a href="linear-regression.html#cb33-12"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># ANOVA of fixed effects</span></span>
+<span id="cb33-13"><a href="linear-regression.html#cb33-13"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">anova</span>(mymodel) </span>
+<span id="cb33-14"><a href="linear-regression.html#cb33-14"></a><span class="co">## Type III Analysis of Variance Table with Satterthwaite&#39;s method</span></span>
+<span id="cb33-15"><a href="linear-regression.html#cb33-15"></a><span class="co">##         Sum Sq Mean Sq NumDF DenDF F value    Pr(&gt;F)    </span></span>
+<span id="cb33-16"><a href="linear-regression.html#cb33-16"></a><span class="co">## variety 12.543  4.1808     3    21  8.8573 0.0005458 ***</span></span>
+<span id="cb33-17"><a href="linear-regression.html#cb33-17"></a><span class="co">## ---</span></span>
+<span id="cb33-18"><a href="linear-regression.html#cb33-18"></a><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb33-19"><a href="linear-regression.html#cb33-19"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb33-20"><a href="linear-regression.html#cb33-20"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># ANOVA-like analysis of random effects</span></span>
+<span id="cb33-21"><a href="linear-regression.html#cb33-21"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">ranova</span>(mymodel) </span>
+<span id="cb33-22"><a href="linear-regression.html#cb33-22"></a><span class="co">## ANOVA-like table for random-effects: Single term deletions</span></span>
+<span id="cb33-23"><a href="linear-regression.html#cb33-23"></a><span class="co">## </span></span>
+<span id="cb33-24"><a href="linear-regression.html#cb33-24"></a><span class="co">## Model:</span></span>
+<span id="cb33-25"><a href="linear-regression.html#cb33-25"></a><span class="co">## yield ~ variety + (1 | block)</span></span>
+<span id="cb33-26"><a href="linear-regression.html#cb33-26"></a><span class="co">##             npar  logLik     AIC    LRT Df Pr(&gt;Chisq)    </span></span>
+<span id="cb33-27"><a href="linear-regression.html#cb33-27"></a><span class="co">## &lt;none&gt;         6 -41.093  94.186                         </span></span>
+<span id="cb33-28"><a href="linear-regression.html#cb33-28"></a><span class="co">## (1 | block)    5 -48.831 107.662 15.476  1  8.357e-05 ***</span></span>
+<span id="cb33-29"><a href="linear-regression.html#cb33-29"></a><span class="co">## ---</span></span>
+<span id="cb33-30"><a href="linear-regression.html#cb33-30"></a><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+</div>
+<div id="em-means" class="section level2">
+<h2><span class="header-section-number">3.4</span> EM-Means</h2>
+<p>Estimated Marginal Means are basically the best estimate of the main effect of a model when it’s averaged over all levels of other effects. (So, for example, the best estimate of each plant variety averaged over blocks, years, etc.) They are especially useful when some of your treatments don’t appear in every block because they help remove the bias that can cause.</p>
+<p>EM-Means are calculated with the emmeans package using the emmeans() function.</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="linear-regression.html#cb34-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(emmeans) </span>
+<span id="cb34-2"><a href="linear-regression.html#cb34-2"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb34-3"><a href="linear-regression.html#cb34-3"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lm</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb34-4"><a href="linear-regression.html#cb34-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">emmeans</span>(mymodel, <span class="dt">specs=</span><span class="st">&quot;variety&quot;</span>) <span class="co"># Specs specifies which terms you&#39;re looking at</span></span>
+<span id="cb34-5"><a href="linear-regression.html#cb34-5"></a><span class="co">##  variety emmean    SE df lower.CL upper.CL</span></span>
+<span id="cb34-6"><a href="linear-regression.html#cb34-6"></a><span class="co">##  DK417     6.65 0.243 21     6.14     7.16</span></span>
+<span id="cb34-7"><a href="linear-regression.html#cb34-7"></a><span class="co">##  DK884     6.71 0.243 21     6.21     7.22</span></span>
+<span id="cb34-8"><a href="linear-regression.html#cb34-8"></a><span class="co">##  M154      5.91 0.243 21     5.41     6.42</span></span>
+<span id="cb34-9"><a href="linear-regression.html#cb34-9"></a><span class="co">##  PH991     7.67 0.243 21     7.17     8.18</span></span>
+<span id="cb34-10"><a href="linear-regression.html#cb34-10"></a><span class="co">## </span></span>
+<span id="cb34-11"><a href="linear-regression.html#cb34-11"></a><span class="co">## Results are averaged over the levels of: block </span></span>
+<span id="cb34-12"><a href="linear-regression.html#cb34-12"></a><span class="co">## Confidence level used: 0.95</span></span></code></pre></div>
+<div id="cld" class="section level3">
+<h3><span class="header-section-number">3.4.1</span> CLD()</h3>
+<p>To perform a Tukey-like test and get a compact letter distplay of the results, use CLD()</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="linear-regression.html#cb35-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(emmeans) </span>
+<span id="cb35-2"><a href="linear-regression.html#cb35-2"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb35-3"><a href="linear-regression.html#cb35-3"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lm</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb35-4"><a href="linear-regression.html#cb35-4"></a><span class="op">&gt;</span><span class="st"> </span>mymeans =<span class="st"> </span><span class="kw">emmeans</span>(mymodel, <span class="dt">specs=</span><span class="st">&quot;variety&quot;</span>)</span>
+<span id="cb35-5"><a href="linear-regression.html#cb35-5"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">CLD</span>(mymeans)</span>
+<span id="cb35-6"><a href="linear-regression.html#cb35-6"></a><span class="co">## Warning: &#39;CLD&#39; will be deprecated. Its use is discouraged.</span></span>
+<span id="cb35-7"><a href="linear-regression.html#cb35-7"></a><span class="co">## See &#39;? CLD&#39; for an explanation. Use &#39;pwpp&#39; or &#39;multcomp::cld&#39; instead.</span></span>
+<span id="cb35-8"><a href="linear-regression.html#cb35-8"></a><span class="co">##  variety emmean    SE df lower.CL upper.CL .group</span></span>
+<span id="cb35-9"><a href="linear-regression.html#cb35-9"></a><span class="co">##  M154      5.91 0.243 21     5.41     6.42  1    </span></span>
+<span id="cb35-10"><a href="linear-regression.html#cb35-10"></a><span class="co">##  DK417     6.65 0.243 21     6.14     7.16  1    </span></span>
+<span id="cb35-11"><a href="linear-regression.html#cb35-11"></a><span class="co">##  DK884     6.71 0.243 21     6.21     7.22  1    </span></span>
+<span id="cb35-12"><a href="linear-regression.html#cb35-12"></a><span class="co">##  PH991     7.67 0.243 21     7.17     8.18   2   </span></span>
+<span id="cb35-13"><a href="linear-regression.html#cb35-13"></a><span class="co">## </span></span>
+<span id="cb35-14"><a href="linear-regression.html#cb35-14"></a><span class="co">## Results are averaged over the levels of: block </span></span>
+<span id="cb35-15"><a href="linear-regression.html#cb35-15"></a><span class="co">## Confidence level used: 0.95 </span></span>
+<span id="cb35-16"><a href="linear-regression.html#cb35-16"></a><span class="co">## P value adjustment: tukey method for comparing a family of 4 estimates </span></span>
+<span id="cb35-17"><a href="linear-regression.html#cb35-17"></a><span class="co">## significance level used: alpha = 0.05</span></span></code></pre></div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="anova.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="experimental-designs.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

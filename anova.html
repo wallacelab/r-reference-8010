@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 ANOVA | R Reference Sheet for CRSS 8010</title>
+  <meta name="description" content="Basic R reference document for CRSS 8010" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 ANOVA | R Reference Sheet for CRSS 8010" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://wallacelab.uga.edu/class/r-reference/" />
+  
+  <meta property="og:description" content="Basic R reference document for CRSS 8010" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 ANOVA | R Reference Sheet for CRSS 8010" />
+  
+  <meta name="twitter:description" content="Basic R reference document for CRSS 8010" />
+  
+
+<meta name="author" content="Jason G. Wallace" />
+
+
+<meta name="date" content="2020-09-29" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="r-basics.html"/>
+<link rel="next" href="linear-regression.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Reference Sheet for CRSS 8010</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Introduction</a></li>
+<li class="chapter" data-level="1" data-path="r-basics.html"><a href="r-basics.html"><i class="fa fa-check"></i><b>1</b> R Basics</a><ul>
+<li class="chapter" data-level="1.1" data-path="r-basics.html"><a href="r-basics.html#data-types"><i class="fa fa-check"></i><b>1.1</b> Data types</a></li>
+<li class="chapter" data-level="1.2" data-path="r-basics.html"><a href="r-basics.html#vectors"><i class="fa fa-check"></i><b>1.2</b> Vectors</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="r-basics.html"><a href="r-basics.html#c"><i class="fa fa-check"></i><b>1.2.1</b> c()</a></li>
+<li class="chapter" data-level="1.2.2" data-path="r-basics.html"><a href="r-basics.html#length"><i class="fa fa-check"></i><b>1.2.2</b> length()</a></li>
+<li class="chapter" data-level="1.2.3" data-path="r-basics.html"><a href="r-basics.html#class"><i class="fa fa-check"></i><b>1.2.3</b> class()</a></li>
+<li class="chapter" data-level="1.2.4" data-path="r-basics.html"><a href="r-basics.html#as.____"><i class="fa fa-check"></i><b>1.2.4</b> as.____()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="r-basics.html"><a href="r-basics.html#matrices"><i class="fa fa-check"></i><b>1.3</b> Matrices</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="r-basics.html"><a href="r-basics.html#matrix"><i class="fa fa-check"></i><b>1.3.1</b> matrix()</a></li>
+<li class="chapter" data-level="1.3.2" data-path="r-basics.html"><a href="r-basics.html#matrix-dimensions-dim-nrow-and-ncol"><i class="fa fa-check"></i><b>1.3.2</b> Matrix dimensions: dim(), nrow() and ncol()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="r-basics.html"><a href="r-basics.html#data-frames"><i class="fa fa-check"></i><b>1.4</b> Data frames</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="r-basics.html"><a href="r-basics.html#data.frame"><i class="fa fa-check"></i><b>1.4.1</b> data.frame()</a></li>
+<li class="chapter" data-level="1.4.2" data-path="r-basics.html"><a href="r-basics.html#dim-nrow-and-ncol"><i class="fa fa-check"></i><b>1.4.2</b> dim(), nrow() and ncol()</a></li>
+<li class="chapter" data-level="1.4.3" data-path="r-basics.html"><a href="r-basics.html#names"><i class="fa fa-check"></i><b>1.4.3</b> names()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="r-basics.html"><a href="r-basics.html#lists"><i class="fa fa-check"></i><b>1.5</b> Lists</a><ul>
+<li class="chapter" data-level="1.5.1" data-path="r-basics.html"><a href="r-basics.html#list"><i class="fa fa-check"></i><b>1.5.1</b> list()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="r-basics.html"><a href="r-basics.html#reading-and-writing-data"><i class="fa fa-check"></i><b>1.6</b> Reading and writing data</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="r-basics.html"><a href="r-basics.html#scan"><i class="fa fa-check"></i><b>1.6.1</b> scan()</a></li>
+<li class="chapter" data-level="1.6.2" data-path="r-basics.html"><a href="r-basics.html#read.table-and-read.csv"><i class="fa fa-check"></i><b>1.6.2</b> read.table() and read.csv()</a></li>
+<li class="chapter" data-level="1.6.3" data-path="r-basics.html"><a href="r-basics.html#write.table-and-write.csv"><i class="fa fa-check"></i><b>1.6.3</b> write.table() and write.csv()</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="r-basics.html"><a href="r-basics.html#boolean-expressions"><i class="fa fa-check"></i><b>1.7</b> Boolean expressions</a><ul>
+<li class="chapter" data-level="1.7.1" data-path="r-basics.html"><a href="r-basics.html#basic-comparison-operators"><i class="fa fa-check"></i><b>1.7.1</b> Basic comparison operators</a></li>
+<li class="chapter" data-level="1.7.2" data-path="r-basics.html"><a href="r-basics.html#missing-and-non-finite-values"><i class="fa fa-check"></i><b>1.7.2</b> Missing and non-finite values</a></li>
+<li class="chapter" data-level="1.7.3" data-path="r-basics.html"><a href="r-basics.html#boolean-operators"><i class="fa fa-check"></i><b>1.7.3</b> Boolean operators</a></li>
+<li class="chapter" data-level="1.7.4" data-path="r-basics.html"><a href="r-basics.html#subsetting-with-boolean-expressions"><i class="fa fa-check"></i><b>1.7.4</b> Subsetting with boolean expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="1.8" data-path="r-basics.html"><a href="r-basics.html#other-utility-functions"><i class="fa fa-check"></i><b>1.8</b> Other utility functions</a><ul>
+<li class="chapter" data-level="1.8.1" data-path="r-basics.html"><a href="r-basics.html#head-and-tail"><i class="fa fa-check"></i><b>1.8.1</b> head() and tail()</a></li>
+<li class="chapter" data-level="1.8.2" data-path="r-basics.html"><a href="r-basics.html#str"><i class="fa fa-check"></i><b>1.8.2</b> str()</a></li>
+<li class="chapter" data-level="1.8.3" data-path="r-basics.html"><a href="r-basics.html#paste"><i class="fa fa-check"></i><b>1.8.3</b> paste()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="anova.html"><a href="anova.html"><i class="fa fa-check"></i><b>2</b> ANOVA</a><ul>
+<li class="chapter" data-level="2.1" data-path="anova.html"><a href="anova.html#aov"><i class="fa fa-check"></i><b>2.1</b> aov()</a></li>
+<li class="chapter" data-level="2.2" data-path="anova.html"><a href="anova.html#anova-1"><i class="fa fa-check"></i><b>2.2</b> anova()</a></li>
+<li class="chapter" data-level="2.3" data-path="anova.html"><a href="anova.html#anova-2"><i class="fa fa-check"></i><b>2.3</b> Anova()</a></li>
+<li class="chapter" data-level="2.4" data-path="anova.html"><a href="anova.html#tukey_tests"><i class="fa fa-check"></i><b>2.4</b> Tukey tests</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="linear-regression.html"><a href="linear-regression.html"><i class="fa fa-check"></i><b>3</b> Linear Regression</a><ul>
+<li class="chapter" data-level="3.1" data-path="linear-regression.html"><a href="linear-regression.html#lm"><i class="fa fa-check"></i><b>3.1</b> lm()</a></li>
+<li class="chapter" data-level="3.2" data-path="linear-regression.html"><a href="linear-regression.html#random-effects-and-lme4"><i class="fa fa-check"></i><b>3.2</b> Random effects and lme4</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="linear-regression.html"><a href="linear-regression.html#extracting-blues-and-blups"><i class="fa fa-check"></i><b>3.2.1</b> Extracting BLUEs and BLUPs</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="linear-regression.html"><a href="linear-regression.html#lmertest"><i class="fa fa-check"></i><b>3.3</b> lmerTest</a></li>
+<li class="chapter" data-level="3.4" data-path="linear-regression.html"><a href="linear-regression.html#em-means"><i class="fa fa-check"></i><b>3.4</b> EM-Means</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="linear-regression.html"><a href="linear-regression.html#cld"><i class="fa fa-check"></i><b>3.4.1</b> CLD()</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="experimental-designs.html"><a href="experimental-designs.html"><i class="fa fa-check"></i><b>4</b> Experimental Designs</a><ul>
+<li class="chapter" data-level="4.1" data-path="experimental-designs.html"><a href="experimental-designs.html#factorial-designs"><i class="fa fa-check"></i><b>4.1</b> Factorial designs</a></li>
+<li class="chapter" data-level="4.2" data-path="experimental-designs.html"><a href="experimental-designs.html#completely-randomized-design"><i class="fa fa-check"></i><b>4.2</b> Completely randomized design</a></li>
+<li class="chapter" data-level="4.3" data-path="experimental-designs.html"><a href="experimental-designs.html#randomized-complete-block-designs"><i class="fa fa-check"></i><b>4.3</b> Randomized complete block designs</a></li>
+<li class="chapter" data-level="4.4" data-path="experimental-designs.html"><a href="experimental-designs.html#latin-squares"><i class="fa fa-check"></i><b>4.4</b> Latin Squares</a></li>
+<li class="chapter" data-level="4.5" data-path="experimental-designs.html"><a href="experimental-designs.html#graeco-latin-squares"><i class="fa fa-check"></i><b>4.5</b> Graeco-Latin Squares</a></li>
+<li class="chapter" data-level="4.6" data-path="experimental-designs.html"><a href="experimental-designs.html#balanced-incomplete-block-designs"><i class="fa fa-check"></i><b>4.6</b> Balanced Incomplete Block Designs</a></li>
+<li class="chapter" data-level="4.7" data-path="experimental-designs.html"><a href="experimental-designs.html#confounded-designs"><i class="fa fa-check"></i><b>4.7</b> Confounded designs</a></li>
+<li class="chapter" data-level="4.8" data-path="experimental-designs.html"><a href="experimental-designs.html#split-plot-designs"><i class="fa fa-check"></i><b>4.8</b> Split-plot designs</a></li>
+<li class="chapter" data-level="4.9" data-path="experimental-designs.html"><a href="experimental-designs.html#strip-plot-designs"><i class="fa fa-check"></i><b>4.9</b> Strip-plot designs</a></li>
+<li class="chapter" data-level="4.10" data-path="experimental-designs.html"><a href="experimental-designs.html#augmented-designs"><i class="fa fa-check"></i><b>4.10</b> Augmented designs</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="plotting-tools.html"><a href="plotting-tools.html"><i class="fa fa-check"></i><b>5</b> Plotting Tools</a><ul>
+<li class="chapter" data-level="5.1" data-path="plotting-tools.html"><a href="plotting-tools.html#scatterplots"><i class="fa fa-check"></i><b>5.1</b> Scatterplots</a></li>
+<li class="chapter" data-level="5.2" data-path="plotting-tools.html"><a href="plotting-tools.html#histograms"><i class="fa fa-check"></i><b>5.2</b> Histograms</a></li>
+<li class="chapter" data-level="5.3" data-path="plotting-tools.html"><a href="plotting-tools.html#boxplots"><i class="fa fa-check"></i><b>5.3</b> Boxplots</a></li>
+<li class="chapter" data-level="5.4" data-path="plotting-tools.html"><a href="plotting-tools.html#violin-plots"><i class="fa fa-check"></i><b>5.4</b> Violin plots</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R Reference Sheet for CRSS 8010</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="anova" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> ANOVA</h1>
+<p>ANOVA (ANalysis Of VAriance) is one method we use to determine how much of our results are due to different treatments. R actually has two functions to do ANOVA:</p>
+<ul>
+<li><a href="anova.html#aov">aov()</a> is basic ANOVA and will be used here.</li>
+<li><a href="linear_regression.nb.html#anova">anova()</a> and <a href="linear_regression.nb.html#anova2">Anova()</a> are used in conjunction with <a href="linear_regression.nb.html">linear regression</a> and so is discussed on that page instead.</li>
+</ul>
+<div id="aov" class="section level2">
+<h2><span class="header-section-number">2.1</span> aov()</h2>
+<p>The aov() function performs direct ANOVA analysis. It is easiest to have your data in a <a href="r-basics.nb.html#data_frames">data frame</a>, with your variables as column names. (See <a href="http://faculty.chicagobooth.edu/richard.hahn/teaching/formulanotation.pdf">this document</a> for an explanation of R’s formula operators.)</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="anova.html#cb24-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># Example ANOVA of maize yield data</span></span>
+<span id="cb24-2"><a href="anova.html#cb24-2"></a><span class="er">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb24-3"><a href="anova.html#cb24-3"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">aov</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb24-4"><a href="anova.html#cb24-4"></a><span class="op">&gt;</span><span class="st"> </span>mymodel</span>
+<span id="cb24-5"><a href="anova.html#cb24-5"></a><span class="co">## Call:</span></span>
+<span id="cb24-6"><a href="anova.html#cb24-6"></a><span class="co">##    aov(formula = yield ~ block + variety, data = mydata)</span></span>
+<span id="cb24-7"><a href="anova.html#cb24-7"></a><span class="co">## </span></span>
+<span id="cb24-8"><a href="anova.html#cb24-8"></a><span class="co">## Terms:</span></span>
+<span id="cb24-9"><a href="anova.html#cb24-9"></a><span class="co">##                   block variety Residuals</span></span>
+<span id="cb24-10"><a href="anova.html#cb24-10"></a><span class="co">## Sum of Squares  29.9400 12.5425    9.9125</span></span>
+<span id="cb24-11"><a href="anova.html#cb24-11"></a><span class="co">## Deg. of Freedom       7       3        21</span></span>
+<span id="cb24-12"><a href="anova.html#cb24-12"></a><span class="co">## </span></span>
+<span id="cb24-13"><a href="anova.html#cb24-13"></a><span class="co">## Residual standard error: 0.6870399</span></span>
+<span id="cb24-14"><a href="anova.html#cb24-14"></a><span class="co">## Estimated effects may be unbalanced</span></span></code></pre></div>
+<p>The basic output of aov() gives you the sums of squares and DOF for each of your effects, but does not calculate the F-statistics and p-values we need to determine significance. For that you need to call summary() on the aov() results:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="anova.html#cb25-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># &#39;mymodel&#39; is the result of the call to aov(), above</span></span>
+<span id="cb25-2"><a href="anova.html#cb25-2"></a><span class="er">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb25-3"><a href="anova.html#cb25-3"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">aov</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb25-4"><a href="anova.html#cb25-4"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">summary</span>(mymodel)</span>
+<span id="cb25-5"><a href="anova.html#cb25-5"></a><span class="co">##             Df Sum Sq Mean Sq F value   Pr(&gt;F)    </span></span>
+<span id="cb25-6"><a href="anova.html#cb25-6"></a><span class="co">## block        7 29.940   4.277   9.061 3.74e-05 ***</span></span>
+<span id="cb25-7"><a href="anova.html#cb25-7"></a><span class="co">## variety      3 12.543   4.181   8.857 0.000546 ***</span></span>
+<span id="cb25-8"><a href="anova.html#cb25-8"></a><span class="co">## Residuals   21  9.912   0.472                     </span></span>
+<span id="cb25-9"><a href="anova.html#cb25-9"></a><span class="co">## ---</span></span>
+<span id="cb25-10"><a href="anova.html#cb25-10"></a><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+</div>
+<div id="anova-1" class="section level2">
+<h2><span class="header-section-number">2.2</span> anova()</h2>
+<p>anova() is a generic function to perform ANOVA analysis on some sort of fitted model, such as the output from lm(). Its output is very similar to that of aov(), but we prefer using anova() because linear regression is more versatile. anova() can only do Type I sums of squares, so model order matters.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="anova.html#cb26-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb26-2"><a href="anova.html#cb26-2"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lm</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb26-3"><a href="anova.html#cb26-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">anova</span>(mymodel)</span>
+<span id="cb26-4"><a href="anova.html#cb26-4"></a><span class="co">## Analysis of Variance Table</span></span>
+<span id="cb26-5"><a href="anova.html#cb26-5"></a><span class="co">## </span></span>
+<span id="cb26-6"><a href="anova.html#cb26-6"></a><span class="co">## Response: yield</span></span>
+<span id="cb26-7"><a href="anova.html#cb26-7"></a><span class="co">##           Df  Sum Sq Mean Sq F value    Pr(&gt;F)    </span></span>
+<span id="cb26-8"><a href="anova.html#cb26-8"></a><span class="co">## block      7 29.9400  4.2771  9.0613 3.743e-05 ***</span></span>
+<span id="cb26-9"><a href="anova.html#cb26-9"></a><span class="co">## variety    3 12.5425  4.1808  8.8573 0.0005458 ***</span></span>
+<span id="cb26-10"><a href="anova.html#cb26-10"></a><span class="co">## Residuals 21  9.9125  0.4720                      </span></span>
+<span id="cb26-11"><a href="anova.html#cb26-11"></a><span class="co">## ---</span></span>
+<span id="cb26-12"><a href="anova.html#cb26-12"></a><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+<p>See the section on <a href="linear-regression.html#lmertest">lmerTest</a> for how to perform ANOVA on random-effect and mixed-effect linear models.</p>
+</div>
+<div id="anova-2" class="section level2">
+<h2><span class="header-section-number">2.3</span> Anova()</h2>
+<p>Anova() is part of the <a href="https://cran.r-project.org/web/packages/car/index.html">car</a> package, and we use it to do Type II and Type III sums-of-squares. Note that you have to change the way R handles contrasts for Type III to run correctly.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="anova.html#cb27-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="co"># Read in data and fit mdoel</span></span>
+<span id="cb27-2"><a href="anova.html#cb27-2"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">library</span>(car)</span>
+<span id="cb27-3"><a href="anova.html#cb27-3"></a><span class="op">&gt;</span><span class="st"> </span>bananas =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/bananas.csv&#39;</span>)</span>
+<span id="cb27-4"><a href="anova.html#cb27-4"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">lm</span>(resistance <span class="op">~</span><span class="st"> </span>variety <span class="op">*</span><span class="st"> </span>fungicide, <span class="dt">data=</span>bananas)</span>
+<span id="cb27-5"><a href="anova.html#cb27-5"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb27-6"><a href="anova.html#cb27-6"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># Type II</span></span>
+<span id="cb27-7"><a href="anova.html#cb27-7"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">Anova</span>(mymodel, <span class="dt">type=</span><span class="dv">2</span>)</span>
+<span id="cb27-8"><a href="anova.html#cb27-8"></a><span class="co">## Anova Table (Type II tests)</span></span>
+<span id="cb27-9"><a href="anova.html#cb27-9"></a><span class="co">## </span></span>
+<span id="cb27-10"><a href="anova.html#cb27-10"></a><span class="co">## Response: resistance</span></span>
+<span id="cb27-11"><a href="anova.html#cb27-11"></a><span class="co">##                    Sum Sq Df F value    Pr(&gt;F)    </span></span>
+<span id="cb27-12"><a href="anova.html#cb27-12"></a><span class="co">## variety           16.1644  4 10.3353 1.014e-06 ***</span></span>
+<span id="cb27-13"><a href="anova.html#cb27-13"></a><span class="co">## fungicide          2.4407  2  3.1211   0.04989 *  </span></span>
+<span id="cb27-14"><a href="anova.html#cb27-14"></a><span class="co">## variety:fungicide  4.6349  8  1.4817   0.17822    </span></span>
+<span id="cb27-15"><a href="anova.html#cb27-15"></a><span class="co">## Residuals         29.3250 75                      </span></span>
+<span id="cb27-16"><a href="anova.html#cb27-16"></a><span class="co">## ---</span></span>
+<span id="cb27-17"><a href="anova.html#cb27-17"></a><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span>
+<span id="cb27-18"><a href="anova.html#cb27-18"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb27-19"><a href="anova.html#cb27-19"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># Type III</span></span>
+<span id="cb27-20"><a href="anova.html#cb27-20"></a><span class="er">&gt;</span><span class="st"> </span><span class="kw">options</span>(<span class="dt">contrasts =</span> <span class="kw">c</span>(<span class="st">&quot;contr.sum&quot;</span>, <span class="st">&quot;contr.poly&quot;</span>)) <span class="co"># So Type III works right</span></span>
+<span id="cb27-21"><a href="anova.html#cb27-21"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">Anova</span>(mymodel, <span class="dt">type=</span><span class="dv">3</span>)</span>
+<span id="cb27-22"><a href="anova.html#cb27-22"></a><span class="co">## Anova Table (Type III tests)</span></span>
+<span id="cb27-23"><a href="anova.html#cb27-23"></a><span class="co">## </span></span>
+<span id="cb27-24"><a href="anova.html#cb27-24"></a><span class="co">## Response: resistance</span></span>
+<span id="cb27-25"><a href="anova.html#cb27-25"></a><span class="co">##                    Sum Sq Df  F value    Pr(&gt;F)    </span></span>
+<span id="cb27-26"><a href="anova.html#cb27-26"></a><span class="co">## (Intercept)       101.682  1 260.0554 &lt; 2.2e-16 ***</span></span>
+<span id="cb27-27"><a href="anova.html#cb27-27"></a><span class="co">## variety             7.297  4   4.6654  0.002038 ** </span></span>
+<span id="cb27-28"><a href="anova.html#cb27-28"></a><span class="co">## fungicide           2.830  2   3.6189  0.031594 *  </span></span>
+<span id="cb27-29"><a href="anova.html#cb27-29"></a><span class="co">## variety:fungicide   4.635  8   1.4817  0.178217    </span></span>
+<span id="cb27-30"><a href="anova.html#cb27-30"></a><span class="co">## Residuals          29.325 75                       </span></span>
+<span id="cb27-31"><a href="anova.html#cb27-31"></a><span class="co">## ---</span></span>
+<span id="cb27-32"><a href="anova.html#cb27-32"></a><span class="co">## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</span></span></code></pre></div>
+</div>
+<div id="tukey_tests" class="section level2">
+<h2><span class="header-section-number">2.4</span> Tukey tests</h2>
+<p>ANOVA can tell you that there is a significant difference among your factor levels somwhere, but cannot tell you where. For that, you need a Tukey Test (Tukey’s Honest Significant Difference test). This is basically a bunch of pairwise t-tests to determine which pair(s) of factor levels are different from each other, with correction for the number of comparisons you’re making. A Tukey test should <em>only</em> be run if your ANOVA indicates there is a significant difference somewhere.</p>
+<p>There are two methods to do Tukey tests in R. The default TukeyHSD() takes a result from aov() and gives you all pairwise p-values for each factor level. (Note: it does not work on linear regression output from lm():</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="anova.html#cb28-1"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb28-2"><a href="anova.html#cb28-2"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">aov</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb28-3"><a href="anova.html#cb28-3"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">TukeyHSD</span>(mymodel)</span>
+<span id="cb28-4"><a href="anova.html#cb28-4"></a><span class="co">##   Tukey multiple comparisons of means</span></span>
+<span id="cb28-5"><a href="anova.html#cb28-5"></a><span class="co">##     95% family-wise confidence level</span></span>
+<span id="cb28-6"><a href="anova.html#cb28-6"></a><span class="co">## </span></span>
+<span id="cb28-7"><a href="anova.html#cb28-7"></a><span class="co">## Fit: aov(formula = yield ~ block + variety, data = mydata)</span></span>
+<span id="cb28-8"><a href="anova.html#cb28-8"></a><span class="co">## </span></span>
+<span id="cb28-9"><a href="anova.html#cb28-9"></a><span class="co">## $block</span></span>
+<span id="cb28-10"><a href="anova.html#cb28-10"></a><span class="co">##                 diff         lwr         upr     p adj</span></span>
+<span id="cb28-11"><a href="anova.html#cb28-11"></a><span class="co">## block2-block1  0.850 -0.77947909  2.47947909 0.6574659</span></span>
+<span id="cb28-12"><a href="anova.html#cb28-12"></a><span class="co">## block3-block1 -1.050 -2.67947909  0.57947909 0.4113645</span></span>
+<span id="cb28-13"><a href="anova.html#cb28-13"></a><span class="co">## block4-block1 -2.000 -3.62947909 -0.37052091 0.0095724</span></span>
+<span id="cb28-14"><a href="anova.html#cb28-14"></a><span class="co">## block5-block1 -0.225 -1.85447909  1.40447909 0.9997193</span></span>
+<span id="cb28-15"><a href="anova.html#cb28-15"></a><span class="co">## block6-block1  1.325 -0.30447909  2.95447909 0.1685496</span></span>
+<span id="cb28-16"><a href="anova.html#cb28-16"></a><span class="co">## block7-block1  0.050 -1.57947909  1.67947909 1.0000000</span></span>
+<span id="cb28-17"><a href="anova.html#cb28-17"></a><span class="co">## block8-block1 -0.250 -1.87947909  1.37947909 0.9994400</span></span>
+<span id="cb28-18"><a href="anova.html#cb28-18"></a><span class="co">## block3-block2 -1.900 -3.52947909 -0.27052091 0.0151276</span></span>
+<span id="cb28-19"><a href="anova.html#cb28-19"></a><span class="co">## block4-block2 -2.850 -4.47947909 -1.22052091 0.0001830</span></span>
+<span id="cb28-20"><a href="anova.html#cb28-20"></a><span class="co">## block5-block2 -1.075 -2.70447909  0.55447909 0.3834069</span></span>
+<span id="cb28-21"><a href="anova.html#cb28-21"></a><span class="co">## block6-block2  0.475 -1.15447909  2.10447909 0.9728357</span></span>
+<span id="cb28-22"><a href="anova.html#cb28-22"></a><span class="co">## block7-block2 -0.800 -2.42947909  0.82947909 0.7186047</span></span>
+<span id="cb28-23"><a href="anova.html#cb28-23"></a><span class="co">## block8-block2 -1.100 -2.72947909  0.52947909 0.3565008</span></span>
+<span id="cb28-24"><a href="anova.html#cb28-24"></a><span class="co">## block4-block3 -0.950 -2.57947909  0.67947909 0.5315240</span></span>
+<span id="cb28-25"><a href="anova.html#cb28-25"></a><span class="co">## block5-block3  0.825 -0.80447909  2.45447909 0.6883738</span></span>
+<span id="cb28-26"><a href="anova.html#cb28-26"></a><span class="co">## block6-block3  2.375  0.74552091  4.00447909 0.0016661</span></span>
+<span id="cb28-27"><a href="anova.html#cb28-27"></a><span class="co">## block7-block3  1.100 -0.52947909  2.72947909 0.3565008</span></span>
+<span id="cb28-28"><a href="anova.html#cb28-28"></a><span class="co">## block8-block3  0.800 -0.82947909  2.42947909 0.7186047</span></span>
+<span id="cb28-29"><a href="anova.html#cb28-29"></a><span class="co">## block5-block4  1.775  0.14552091  3.40447909 0.0265304</span></span>
+<span id="cb28-30"><a href="anova.html#cb28-30"></a><span class="co">## block6-block4  3.325  1.69552091  4.95447909 0.0000217</span></span>
+<span id="cb28-31"><a href="anova.html#cb28-31"></a><span class="co">## block7-block4  2.050  0.42052091  3.67947909 0.0075991</span></span>
+<span id="cb28-32"><a href="anova.html#cb28-32"></a><span class="co">## block8-block4  1.750  0.12052091  3.37947909 0.0296337</span></span>
+<span id="cb28-33"><a href="anova.html#cb28-33"></a><span class="co">## block6-block5  1.550 -0.07947909  3.17947909 0.0698250</span></span>
+<span id="cb28-34"><a href="anova.html#cb28-34"></a><span class="co">## block7-block5  0.275 -1.35447909  1.90447909 0.9989637</span></span>
+<span id="cb28-35"><a href="anova.html#cb28-35"></a><span class="co">## block8-block5 -0.025 -1.65447909  1.60447909 1.0000000</span></span>
+<span id="cb28-36"><a href="anova.html#cb28-36"></a><span class="co">## block7-block6 -1.275 -2.90447909  0.35447909 0.2017310</span></span>
+<span id="cb28-37"><a href="anova.html#cb28-37"></a><span class="co">## block8-block6 -1.575 -3.20447909  0.05447909 0.0629293</span></span>
+<span id="cb28-38"><a href="anova.html#cb28-38"></a><span class="co">## block8-block7 -0.300 -1.92947909  1.32947909 0.9981982</span></span>
+<span id="cb28-39"><a href="anova.html#cb28-39"></a><span class="co">## </span></span>
+<span id="cb28-40"><a href="anova.html#cb28-40"></a><span class="co">## $variety</span></span>
+<span id="cb28-41"><a href="anova.html#cb28-41"></a><span class="co">##                diff          lwr       upr     p adj</span></span>
+<span id="cb28-42"><a href="anova.html#cb28-42"></a><span class="co">## DK884-DK417  0.0625 -0.895002939 1.0200029 0.9977921</span></span>
+<span id="cb28-43"><a href="anova.html#cb28-43"></a><span class="co">## M154-DK417  -0.7375 -1.695002939 0.2200029 0.1711460</span></span>
+<span id="cb28-44"><a href="anova.html#cb28-44"></a><span class="co">## PH991-DK417  1.0250  0.067497061 1.9825029 0.0330723</span></span>
+<span id="cb28-45"><a href="anova.html#cb28-45"></a><span class="co">## M154-DK884  -0.8000 -1.757502939 0.1575029 0.1232938</span></span>
+<span id="cb28-46"><a href="anova.html#cb28-46"></a><span class="co">## PH991-DK884  0.9625  0.004997061 1.9200029 0.0485161</span></span>
+<span id="cb28-47"><a href="anova.html#cb28-47"></a><span class="co">## PH991-M154   1.7625  0.804997061 2.7200029 0.0002401</span></span></code></pre></div>
+<p>More useful output comes from the HSD.test() function in the agricolae package, which will tell you the groupings for a factor. It can also work on the output from lm(). (Note that in boht cases you have to specify which factor you’re interested in):</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="anova.html#cb29-1"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">library</span>(agricolae)</span>
+<span id="cb29-2"><a href="anova.html#cb29-2"></a><span class="op">&gt;</span><span class="st"> </span>mydata =<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;data/maize.csv&#39;</span>)</span>
+<span id="cb29-3"><a href="anova.html#cb29-3"></a><span class="op">&gt;</span><span class="st"> </span>mymodel =<span class="st"> </span><span class="kw">aov</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb29-4"><a href="anova.html#cb29-4"></a><span class="op">&gt;</span><span class="st"> </span>tukey =<span class="st"> </span><span class="kw">HSD.test</span>(mymodel, <span class="dt">trt=</span><span class="st">&#39;variety&#39;</span>) <span class="co"># the &#39;trt&#39; argument specified which factor to compare</span></span>
+<span id="cb29-5"><a href="anova.html#cb29-5"></a><span class="op">&gt;</span><span class="st"> </span>tukey <span class="co"># HDS.test() doesn&#39;t print out the result by default, so have to print it out manually</span></span>
+<span id="cb29-6"><a href="anova.html#cb29-6"></a><span class="co">## $statistics</span></span>
+<span id="cb29-7"><a href="anova.html#cb29-7"></a><span class="co">##     MSerror Df   Mean       CV       MSD</span></span>
+<span id="cb29-8"><a href="anova.html#cb29-8"></a><span class="co">##   0.4720238 21 6.7375 10.19725 0.9575029</span></span>
+<span id="cb29-9"><a href="anova.html#cb29-9"></a><span class="co">## </span></span>
+<span id="cb29-10"><a href="anova.html#cb29-10"></a><span class="co">## $parameters</span></span>
+<span id="cb29-11"><a href="anova.html#cb29-11"></a><span class="co">##    test  name.t ntr StudentizedRange alpha</span></span>
+<span id="cb29-12"><a href="anova.html#cb29-12"></a><span class="co">##   Tukey variety   4         3.941878  0.05</span></span>
+<span id="cb29-13"><a href="anova.html#cb29-13"></a><span class="co">## </span></span>
+<span id="cb29-14"><a href="anova.html#cb29-14"></a><span class="co">## $means</span></span>
+<span id="cb29-15"><a href="anova.html#cb29-15"></a><span class="co">##        yield       std r Min Max   Q25  Q50   Q75</span></span>
+<span id="cb29-16"><a href="anova.html#cb29-16"></a><span class="co">## DK417 6.6500 1.1928358 8 4.9 8.5 5.725 6.85 7.250</span></span>
+<span id="cb29-17"><a href="anova.html#cb29-17"></a><span class="co">## DK884 6.7125 1.2540648 8 4.8 9.1 6.000 6.65 7.175</span></span>
+<span id="cb29-18"><a href="anova.html#cb29-18"></a><span class="co">## M154  5.9125 0.7567553 8 4.5 6.6 5.375 6.30 6.425</span></span>
+<span id="cb29-19"><a href="anova.html#cb29-19"></a><span class="co">## PH991 7.6750 1.4577380 8 5.4 9.6 6.850 8.10 8.450</span></span>
+<span id="cb29-20"><a href="anova.html#cb29-20"></a><span class="co">## </span></span>
+<span id="cb29-21"><a href="anova.html#cb29-21"></a><span class="co">## $comparison</span></span>
+<span id="cb29-22"><a href="anova.html#cb29-22"></a><span class="co">## NULL</span></span>
+<span id="cb29-23"><a href="anova.html#cb29-23"></a><span class="co">## </span></span>
+<span id="cb29-24"><a href="anova.html#cb29-24"></a><span class="co">## $groups</span></span>
+<span id="cb29-25"><a href="anova.html#cb29-25"></a><span class="co">##        yield groups</span></span>
+<span id="cb29-26"><a href="anova.html#cb29-26"></a><span class="co">## PH991 7.6750      a</span></span>
+<span id="cb29-27"><a href="anova.html#cb29-27"></a><span class="co">## DK884 6.7125      b</span></span>
+<span id="cb29-28"><a href="anova.html#cb29-28"></a><span class="co">## DK417 6.6500      b</span></span>
+<span id="cb29-29"><a href="anova.html#cb29-29"></a><span class="co">## M154  5.9125      b</span></span>
+<span id="cb29-30"><a href="anova.html#cb29-30"></a><span class="co">## </span></span>
+<span id="cb29-31"><a href="anova.html#cb29-31"></a><span class="co">## attr(,&quot;class&quot;)</span></span>
+<span id="cb29-32"><a href="anova.html#cb29-32"></a><span class="co">## [1] &quot;group&quot;</span></span>
+<span id="cb29-33"><a href="anova.html#cb29-33"></a><span class="op">&gt;</span><span class="st"> </span></span>
+<span id="cb29-34"><a href="anova.html#cb29-34"></a><span class="er">&gt;</span><span class="st"> </span><span class="co"># HSD.test() also works with linear regression output</span></span>
+<span id="cb29-35"><a href="anova.html#cb29-35"></a><span class="er">&gt;</span><span class="st"> </span>mylm =<span class="st"> </span><span class="kw">lm</span>(yield <span class="op">~</span><span class="st"> </span>block <span class="op">+</span><span class="st"> </span>variety, <span class="dt">data=</span>mydata)</span>
+<span id="cb29-36"><a href="anova.html#cb29-36"></a><span class="op">&gt;</span><span class="st"> </span><span class="kw">HSD.test</span>(mymodel, <span class="dt">trt=</span><span class="st">&#39;variety&#39;</span>)<span class="op">$</span>group</span>
+<span id="cb29-37"><a href="anova.html#cb29-37"></a><span class="co">##        yield groups</span></span>
+<span id="cb29-38"><a href="anova.html#cb29-38"></a><span class="co">## PH991 7.6750      a</span></span>
+<span id="cb29-39"><a href="anova.html#cb29-39"></a><span class="co">## DK884 6.7125      b</span></span>
+<span id="cb29-40"><a href="anova.html#cb29-40"></a><span class="co">## DK417 6.6500      b</span></span>
+<span id="cb29-41"><a href="anova.html#cb29-41"></a><span class="co">## M154  5.9125      b</span></span></code></pre></div>
+<p>Although there is a lot of information in the output from HSD.test(), the $groups section is what we usually care about, since that tells us which factor levels are/are not significantly different from each other.</p>
+<p><a href="index.nb.html">Index</a></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="r-basics.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="linear-regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

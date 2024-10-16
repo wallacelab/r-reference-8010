@@ -1,0 +1,9 @@
+block,covercrop,solarize,disease
+block1,clover,yes,-4.96
+block1,rye,no,2.58
+block2,clover,no,8.2
+block2,rye,yes,5.72
+block3,clover,yes,-3.74
+block3,rye,no,6.66
+block4,clover,no,5.37
+block4,rye,yes,0.53
